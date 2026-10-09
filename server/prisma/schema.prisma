@@ -1,0 +1,382 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id             String          @id @default(uuid())
+  name           String
+  address        String
+  city           String          @default("Salem")
+  state          String          @default("Tamil Nadu")
+  phone          String
+  alternatePhone String?
+  email          String
+  logoUrl        String?
+  currencySymbol String          @default("₹")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  users          User[]
+  categories     Category[]
+  suppliers      Supplier[]
+  customers      Customer[]
+  products       Product[]
+  purchaseOrders PurchaseOrder[]
+  stockReceipts  StockReceipt[]
+  stockIssues    StockIssue[]
+  bills          Bill[]
+  stockMovements StockMovement[]
+  notifications  Notification[]
+
+  @@map("stores")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  storeId      String
+  fullName     String
+  email        String    @unique
+  phone        String?
+  passwordHash String
+  role         String    @default("STORE_OWNER") // STORE_OWNER, MANAGER, CASHIER
+  avatarUrl    String?
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  store        Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+  @@index([email])
+  @@map("users")
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  storeId     String
+  name        String
+  description String?
+  color       String?   @default("#2563EB")
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  store       Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  products    Product[]
+
+  @@unique([storeId, name])
+  @@index([storeId])
+  @@map("categories")
+}
+
+model Supplier {
+  id           String          @id @default(uuid())
+  storeId      String
+  name         String
+  companyName  String
+  phone        String
+  email        String
+  address      String
+  gstin        String?
+  paymentTerms String?         @default("Net 15")
+  leadTimeDays Int             @default(3)
+  isActive     Boolean         @default(true)
+  notes        String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  store          Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  products       Product[]
+  purchaseOrders PurchaseOrder[]
+  stockReceipts  StockReceipt[]
+
+  @@index([storeId])
+  @@map("suppliers")
+}
+
+model Customer {
+  id            String       @id @default(uuid())
+  storeId       String
+  name          String
+  phone         String
+  email         String?
+  address       String?
+  loyaltyPoints Int          @default(0)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  store         Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  stockIssues   StockIssue[]
+  bills         Bill[]
+
+  @@index([storeId])
+  @@map("customers")
+}
+
+model Product {
+  id                  String              @id @default(uuid())
+  storeId             String
+  categoryId          String
+  preferredSupplierId String?
+  name                String
+  sku                 String
+  barcode             String?
+  description         String?
+  unitOfMeasure       String              @default("units") // units, kg, g, L, ml, packs, pcs
+  purchasePrice       Float               @default(0)
+  sellingPrice        Float               @default(0)
+  currentStock        Float               @default(0)
+  reorderLevel        Float               @default(20)
+  targetStockLevel    Float               @default(100)
+  imageUrl            String?
+  isActive            Boolean             @default(true)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  store               Store               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  category            Category            @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  preferredSupplier   Supplier?           @relation(fields: [preferredSupplierId], references: [id], onDelete: SetNull)
+  
+  purchaseOrderItems  PurchaseOrderItem[]
+  stockReceiptItems   StockReceiptItem[]
+  stockIssueItems     StockIssueItem[]
+  billItems           BillItem[]
+  stockMovements      StockMovement[]
+
+  @@unique([storeId, sku])
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([preferredSupplierId])
+  @@index([currentStock])
+  @@map("products")
+}
+
+model PurchaseOrder {
+  id                   String              @id @default(uuid())
+  storeId              String
+  supplierId           String
+  orderNumber          String              @unique
+  status               String              @default("PENDING") // DRAFT, PENDING, PARTIALLY_RECEIVED, RECEIVED, CANCELLED
+  orderDate            DateTime            @default(now())
+  expectedDeliveryDate DateTime?
+  subtotal             Float               @default(0)
+  taxAmount            Float               @default(0)
+  totalAmount          Float               @default(0)
+  notes                String?
+  createdBy            String?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  store                Store               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  supplier             Supplier            @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  items                PurchaseOrderItem[]
+  stockReceipts        StockReceipt[]
+
+  @@index([storeId])
+  @@index([supplierId])
+  @@index([status])
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderItem {
+  id              String        @id @default(uuid())
+  purchaseOrderId String
+  productId       String
+  orderedQuantity Float
+  receivedQuantity Float        @default(0)
+  unitCost        Float
+  lineTotal       Float
+
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  product         Product       @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([purchaseOrderId])
+  @@index([productId])
+  @@map("purchase_order_items")
+}
+
+model StockReceipt {
+  id              String             @id @default(uuid())
+  storeId         String
+  supplierId      String
+  purchaseOrderId String?
+  receiptNumber   String             @unique
+  invoiceNumber   String
+  receiptDate     DateTime           @default(now())
+  subtotal        Float              @default(0)
+  notes           String?
+  createdBy       String?
+  createdAt       DateTime           @default(now())
+
+  store           Store              @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  supplier        Supplier           @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  purchaseOrder   PurchaseOrder?     @relation(fields: [purchaseOrderId], references: [id], onDelete: SetNull)
+  items           StockReceiptItem[]
+
+  @@index([storeId])
+  @@index([supplierId])
+  @@index([purchaseOrderId])
+  @@map("stock_receipts")
+}
+
+model StockReceiptItem {
+  id               String       @id @default(uuid())
+  receiptId        String
+  productId        String
+  quantityReceived Float
+  unitCost         Float
+  lineTotal        Float
+  batchNumber      String?
+  manufactureDate  DateTime?
+  expiryDate       DateTime?
+
+  receipt          StockReceipt @relation(fields: [receiptId], references: [id], onDelete: Cascade)
+  product          Product      @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([receiptId])
+  @@index([productId])
+  @@map("stock_receipt_items")
+}
+
+model Bill {
+  id             String     @id @default(uuid())
+  storeId        String
+  billNumber     String     @unique
+  customerId     String?
+  customerName   String?
+  customerPhone  String?
+  subtotal       Float      @default(0)
+  discountAmount Float      @default(0)
+  taxAmount      Float      @default(0)
+  totalAmount    Float      @default(0)
+  amountPaid     Float      @default(0)
+  changeAmount   Float      @default(0)
+  paymentMethod  String     @default("CASH") // CASH, UPI, CARD, OTHER
+  paymentStatus  String     @default("PAID") // PAID, PARTIAL, PENDING
+  billStatus     String     @default("COMPLETED") // COMPLETED, CANCELLED, REFUNDED
+  notes          String?
+  createdBy      String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  store          Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer       Customer?  @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  items          BillItem[]
+
+  @@index([storeId])
+  @@index([customerId])
+  @@index([billNumber])
+  @@index([createdAt])
+  @@map("bills")
+}
+
+model BillItem {
+  id                  String   @id @default(uuid())
+  billId              String
+  productId           String
+  productNameSnapshot String
+  skuSnapshot         String
+  quantity            Float
+  unitSellingPrice    Float
+  unitCostSnapshot    Float    @default(0)
+  discountAmount      Float    @default(0)
+  taxAmount           Float    @default(0)
+  lineTotal           Float
+
+  bill                Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
+  product             Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([billId])
+  @@index([productId])
+  @@map("bill_items")
+}
+
+model StockIssue {
+  id                String           @id @default(uuid())
+  storeId           String
+  customerId        String?
+  transactionNumber String           @unique
+  transactionType   String           @default("RETAIL_SALE") // RETAIL_SALE, DAMAGED_GOODS, EXPIRED_GOODS, INTERNAL_ADJUSTMENT, RETURN_TO_SUPPLIER
+  transactionDate   DateTime         @default(now())
+  referenceNumber   String?
+  subtotal          Float            @default(0)
+  discount          Float            @default(0)
+  totalAmount       Float            @default(0)
+  paymentMethod     String           @default("CASH") // CASH, UPI, CARD, CREDIT
+  notes             String?
+  createdBy         String?
+  createdAt         DateTime         @default(now())
+
+  store             Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer          Customer?        @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  items             StockIssueItem[]
+
+  @@index([storeId])
+  @@index([customerId])
+  @@index([transactionType])
+  @@map("stock_issues")
+}
+
+model StockIssueItem {
+  id                String     @id @default(uuid())
+  issueId           String
+  productId         String
+  quantity          Float
+  unitSellingPrice  Float
+  unitCost          Float
+  lineTotal         Float
+
+  issue             StockIssue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  product           Product    @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([issueId])
+  @@index([productId])
+  @@map("stock_issue_items")
+}
+
+model StockMovement {
+  id             String   @id @default(uuid())
+  storeId        String
+  productId      String
+  movementType   String   // STOCK_IN, SALE_BILL, STOCK_OUT, ADJUSTMENT, RETURN, INITIAL_STOCK
+  quantityChange Float    // Positive for In, Negative for Out
+  quantityBefore Float
+  quantityAfter  Float
+  unitCost       Float    @default(0)
+  referenceType  String?  // STOCK_RECEIPT, BILL, STOCK_ISSUE, PURCHASE_ORDER, MANUAL
+  referenceId    String?
+  notes          String?
+  createdBy      String?
+  createdAt      DateTime @default(now())
+
+  store          Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([storeId])
+  @@index([productId])
+  @@index([createdAt])
+  @@map("stock_movements")
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  storeId    String
+  type       String   // LOW_STOCK, STOCKOUT, PURCHASE_ORDER, SYSTEM
+  title      String
+  message    String
+  entityType String?  // PRODUCT, PURCHASE_ORDER, SUPPLIER, BILL
+  entityId   String?
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  store      Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+  @@index([isRead])
+  @@map("notifications")
+}

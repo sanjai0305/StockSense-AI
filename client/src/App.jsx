@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import ProductsPage from './pages/ProductsPage';
 import CategoriesPage from './pages/CategoriesPage';
 import StockInPage from './pages/StockInPage';
+import StockOutPage from './pages/StockOutPage';
 import BillingPage from './pages/BillingPage';
 import BillsHistoryPage from './pages/BillsHistoryPage';
 import SuppliersPage from './pages/SuppliersPage';
@@ -73,11 +74,10 @@ function App() {
               <Route path="products" element={<ProductsPage />} />
               <Route path="categories" element={<CategoriesPage />} />
               <Route path="stock-in" element={<StockInPage />} />
+              <Route path="stock-out" element={<StockOutPage />} />
               {/* POS Billing & Sales Routes */}
               <Route path="billing" element={<BillingPage />} />
               <Route path="bills" element={<BillsHistoryPage />} />
-              {/* Backward compatibility redirects for stock-out */}
-              <Route path="stock-out" element={<Navigate to="/billing" replace />} />
               
               <Route path="suppliers" element={<SuppliersPage />} />
               <Route path="customers" element={<CustomersPage />} />

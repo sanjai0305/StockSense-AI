@@ -41,12 +41,12 @@
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-4px);
   }
 }
 
 .animate-float-robot {
-  animation: float-robot 3.6s ease-in-out infinite;
+  animation: float-robot 3.2s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -54,4 +54,5 @@
     animation: none !important;
   }
 }
+
 

@@ -14,6 +14,7 @@ import reorderRoutes from './reorderRoutes.js';
 import reportRoutes from './reportRoutes.js';
 import notificationRoutes from './notificationRoutes.js';
 import userRoutes from './userRoutes.js';
+import aiChatRoutes from './aiChatRoutes.js';
 
 const router = Router();
 
@@ -33,5 +34,6 @@ router.use('/reorder', reorderRoutes);
 router.use('/reports', reportRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/users', userRoutes);
+router.use('/ai', aiChatRoutes);
 
 export default router;

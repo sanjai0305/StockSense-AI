@@ -7,20 +7,20 @@ const FloatingAIAssistant = ({ onOpenAssistant }) => {
 
   return (
     <div
-      className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-40 flex flex-col items-center select-none pointer-events-none"
+      className="fixed bottom-3 right-3 sm:bottom-4 sm:right-5 z-40 flex flex-col items-center select-none pointer-events-none"
       aria-label="StockSense AI Assistant"
     >
-      {/* Speech Bubble Above Robot's Head */}
+      {/* Compact Speech Bubble Above Robot's Head */}
       {(showBubble || isHovered) && (
         <div
           onClick={onOpenAssistant}
-          className="pointer-events-auto mb-1.5 sm:mb-2 relative cursor-pointer group animate-in fade-in zoom-in-95 duration-200"
+          className="pointer-events-auto mb-1 relative cursor-pointer group animate-in fade-in zoom-in-95 duration-150"
           title="Click to Ask AI"
         >
           {/* Bubble Container */}
-          <div className="bg-white/95 backdrop-blur-md border border-[#A7F3D0] text-[#0F172A] px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl shadow-[0_8px_25px_-4px_rgba(5,150,105,0.22)] flex items-center gap-2 transition-all duration-200 group-hover:scale-105 group-hover:border-[#059669] group-hover:shadow-[0_10px_30px_-4px_rgba(5,150,105,0.35)]">
-            <div className="w-2 h-2 rounded-full bg-[#10B981] animate-ping flex-shrink-0" />
-            <span className="text-[12px] sm:text-[13px] font-extrabold text-[#0F172A] tracking-tight whitespace-nowrap">
+          <div className="bg-white/95 backdrop-blur-md border border-[#A7F3D0] text-[#0F172A] px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl shadow-[0_4px_16px_rgba(5,150,105,0.18)] flex items-center gap-1.5 transition-all duration-150 group-hover:scale-105 group-hover:border-[#00966B] group-hover:shadow-[0_6px_20px_rgba(5,150,105,0.28)]">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-ping flex-shrink-0" />
+            <span className="text-[11px] sm:text-[11.5px] font-extrabold text-[#0F172A] tracking-tight whitespace-nowrap">
               How can I help you?
             </span>
             <button
@@ -28,22 +28,22 @@ const FloatingAIAssistant = ({ onOpenAssistant }) => {
                 e.stopPropagation();
                 setShowBubble(false);
               }}
-              className="ml-0.5 text-slate-400 hover:text-slate-600 p-0.5 rounded-md transition-colors"
+              className="ml-0.5 text-slate-400 hover:text-slate-600 p-0.5 rounded transition-colors cursor-pointer"
               title="Dismiss greeting"
               aria-label="Dismiss greeting"
             >
-              <X className="w-3 h-3" />
+              <X className="w-2.5 h-2.5" />
             </button>
           </div>
 
-          {/* Speech Bubble Tail / Pointer pointing to Robot's head */}
-          <div className="absolute left-1/2 -bottom-1.5 -translate-x-1/2 w-3 h-3 bg-white border-r border-b border-[#A7F3D0] rotate-45 group-hover:border-[#059669] transition-colors" />
+          {/* Speech Bubble Tail pointing downward */}
+          <div className="absolute left-1/2 -bottom-1 -translate-x-1/2 w-2 h-2 bg-white border-r border-b border-[#A7F3D0] rotate-45 group-hover:border-[#00966B] transition-colors" />
         </div>
       )}
 
-      {/* Floating 3D Robot Character */}
+      {/* Tiny Compact Floating 3D Robot Mascot (48px on mobile, 60-65px on desktop) */}
       <div
-        className="pointer-events-auto animate-float-robot relative cursor-pointer group"
+        className="pointer-events-auto animate-float-robot relative cursor-pointer group flex items-center justify-center"
         onClick={onOpenAssistant}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -58,20 +58,20 @@ const FloatingAIAssistant = ({ onOpenAssistant }) => {
         title="StockSense AI Assistant — Click to open"
         aria-label="Open AI Assistant"
       >
-        {/* Ambient Green Glow on Hover */}
-        <div className="absolute inset-0 rounded-full bg-emerald-400/20 blur-xl scale-75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        {/* Subtle Ambient Green Glow on Hover */}
+        <div className="absolute inset-0 rounded-full bg-emerald-400/20 blur-md scale-90 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none" />
 
-        {/* 3D Robot Image Asset */}
+        {/* 3D Robot Image Asset (55-65px height on desktop, 45-50px on mobile) */}
         <img
           src="/stocksense-robot.png"
-          alt="StockSense AI Assistant Robot"
-          className="w-28 sm:w-36 md:w-44 h-auto object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.15)] group-hover:scale-105 group-hover:drop-shadow-[0_16px_32px_rgba(16,185,129,0.35)] transition-all duration-300"
+          alt="StockSense AI Assistant Mascot"
+          className="h-[48px] sm:h-[60px] w-auto max-w-[65px] object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)] group-hover:scale-105 group-hover:drop-shadow-[0_6px_16px_rgba(16,185,129,0.35)] transition-all duration-200"
           loading="eager"
         />
 
-        {/* Mini Floating Sparkle Badge */}
-        <div className="absolute top-8 right-1 sm:top-10 sm:right-2 w-6 h-6 rounded-full bg-[#059669] text-white flex items-center justify-center shadow-md scale-90 group-hover:scale-110 transition-transform">
-          <Sparkles className="w-3.5 h-3.5" />
+        {/* Mini Sparkle Indicator */}
+        <div className="absolute top-1 right-0 sm:top-1.5 sm:right-0 w-3.5 h-3.5 rounded-full bg-[#00966B] text-white flex items-center justify-center shadow-2xs scale-90 group-hover:scale-110 transition-transform">
+          <Sparkles className="w-2 h-2" />
         </div>
       </div>
     </div>

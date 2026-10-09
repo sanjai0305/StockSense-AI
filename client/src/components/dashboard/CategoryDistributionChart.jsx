@@ -5,11 +5,11 @@ import { formatNumber } from '../../utils/formatters';
 
 const CategoryDistributionChart = ({ distributionData, totalProducts = 1248 }) => {
   const defaultCategories = [
-    { name: 'Grocery', count: 250, percentage: 20, color: '#2563EB' },
-    { name: 'Beverages', count: 250, percentage: 20, color: '#06B6D4' },
+    { name: 'Grocery', count: 250, percentage: 20, color: '#00966B' },
+    { name: 'Beverages', count: 250, percentage: 20, color: '#10B981' },
     { name: 'Snacks', count: 250, percentage: 20, color: '#F59E0B' },
-    { name: 'Personal Care', count: 250, percentage: 20, color: '#8B5CF6' },
-    { name: 'Household', count: 248, percentage: 20, color: '#EC4899' },
+    { name: 'Personal Care', count: 250, percentage: 20, color: '#06B6D4' },
+    { name: 'Household', count: 248, percentage: 20, color: '#6366F1' },
   ];
 
   const data = distributionData && distributionData.length > 0 ? distributionData : defaultCategories;
@@ -18,7 +18,7 @@ const CategoryDistributionChart = ({ distributionData, totalProducts = 1248 }) =
     <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-card flex flex-col justify-between h-full">
       {/* Header */}
       <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#0969FF] flex items-center justify-center flex-shrink-0">
+        <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#00966B] flex items-center justify-center flex-shrink-0">
           <Layers className="w-4 h-4 stroke-[2.2]" />
         </div>
         <div>

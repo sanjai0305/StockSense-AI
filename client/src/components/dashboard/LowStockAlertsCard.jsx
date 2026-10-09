@@ -61,7 +61,7 @@ const LowStockAlertsCard = ({ lowStockItems = [], onReorderClick }) => {
 
         <button
           onClick={() => navigate('/reorder-suggestions')}
-          className="text-[12px] text-[#0969FF] font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
+          className="text-[12px] text-[#00966B] font-bold hover:underline flex items-center gap-0.5 cursor-pointer"
         >
           <span>View All</span>
           <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />

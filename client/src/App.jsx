@@ -27,10 +27,10 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#081226] flex items-center justify-center text-white">
+      <div className="min-h-screen bg-[#F4FAF6] flex items-center justify-center text-[#14231C]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs text-slate-400 font-medium">Loading StockSense AI...</p>
+          <div className="w-9 h-9 border-3 border-[#00966B]/20 border-t-[#00966B] rounded-full animate-spin" />
+          <p className="text-xs text-[#66756C] font-semibold tracking-wide">Loading StockSense AI...</p>
         </div>
       </div>
     );

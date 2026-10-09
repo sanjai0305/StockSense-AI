@@ -56,6 +56,7 @@ export const handleAiChat = async (req, res, next) => {
         reply: result.reply,
         toolsUsed: result.toolsUsed || [],
         sources: result.sources || [],
+        reportData: result.reportData || null,
         conversationId: validated.conversationId || `conv-${Date.now()}`,
         timestamp: new Date().toISOString(),
       },

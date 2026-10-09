@@ -16,10 +16,10 @@ const CustomTooltip = ({ active, payload, label }) => {
     return (
       <div className="bg-slate-900 text-white text-xs p-2.5 rounded-xl shadow-xl border border-slate-800">
         <p className="font-bold text-slate-300 mb-1">{label}</p>
-        <p className="text-blue-400 font-semibold">
+        <p className="text-emerald-400 font-semibold">
           Stock In: {formatCurrency(payload[0]?.value)}
         </p>
-        <p className="text-cyan-400 font-semibold">
+        <p className="text-teal-300 font-semibold">
           Stock Out: {formatCurrency(payload[1]?.value)}
         </p>
       </div>
@@ -56,7 +56,7 @@ const StockInOutChart = ({ data }) => {
       {/* Chart Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#0969FF] flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#00966B] flex items-center justify-center flex-shrink-0">
             <BarChart2 className="w-4 h-4 stroke-[2.2]" />
           </div>
           <div>
@@ -72,11 +72,11 @@ const StockInOutChart = ({ data }) => {
         {/* Legend & Filter */}
         <div className="flex items-center gap-3.5 text-[11.5px] font-semibold">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#2563EB]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#00966B]" />
             <span className="text-slate-600">Stock In</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#06B6D4]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
             <span className="text-slate-600">Stock Out</span>
           </div>
 
@@ -85,7 +85,7 @@ const StockInOutChart = ({ data }) => {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="appearance-none bg-[#F8FAFC] border border-slate-200 rounded-lg pl-2.5 pr-6 py-1 text-slate-700 text-[11px] font-bold focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+              className="appearance-none bg-[#F8FAFC] border border-slate-200 rounded-lg pl-2.5 pr-6 py-1 text-slate-700 text-[11px] font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
             >
               <option value="This Year">This Year</option>
               <option value="Last 30 Days">Last 30 Days</option>
@@ -123,14 +123,14 @@ const StockInOutChart = ({ data }) => {
             <Bar
               dataKey="stockIn"
               name="Stock In"
-              fill="#2563EB"
+              fill="#00966B"
               radius={[3, 3, 0, 0]}
               barSize={10}
             />
             <Bar
               dataKey="stockOut"
               name="Stock Out"
-              fill="#06B6D4"
+              fill="#10B981"
               radius={[3, 3, 0, 0]}
               barSize={10}
             />

@@ -34,7 +34,7 @@ const BatchOrderModal = ({ isOpen, onClose, onSuccess, selectedItems = [] }) => 
       setTimeout(() => {
         onSuccess();
         onClose();
-      }, 1000);
+      }, 800);
     } catch (err) {
       setError(err.message || 'Failed to place purchase order');
     } finally {
@@ -43,26 +43,26 @@ const BatchOrderModal = ({ isOpen, onClose, onSuccess, selectedItems = [] }) => 
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden border border-[#E2F0E7] animate-in fade-in zoom-in-95">
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden border border-[#DCEBE1] animate-in fade-in zoom-in-95">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-[#E2F0E7] flex items-center justify-between bg-[#E8F8EE]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-white text-[#059669] flex items-center justify-center font-bold shadow-xs">
+        <div className="px-6 py-4 border-b border-[#DCEBE1] flex items-center justify-between bg-[#F4FAF6]">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#E8F8EE] text-[#00966B] flex items-center justify-center font-bold">
               <Truck className="w-5 h-5 stroke-[2.2]" />
             </div>
             <div>
-              <h3 className="font-extrabold text-[#0F172A] text-base">
+              <h3 className="font-black text-[#14231C] text-base">
                 Confirm Purchase Order Placement
               </h3>
-              <p className="text-xs text-[#64748B] font-medium">
+              <p className="text-xs text-[#66756C] font-medium">
                 Generate official Purchase Orders grouped by distributor
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-[#66756C] hover:text-[#14231C] rounded-xl hover:bg-slate-100 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -71,29 +71,29 @@ const BatchOrderModal = ({ isOpen, onClose, onSuccess, selectedItems = [] }) => 
         {/* Content */}
         <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl flex items-center gap-2">
+            <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-2xl flex items-center gap-2">
               <AlertCircle className="w-4 h-4" />
               <span>{error}</span>
             </div>
           )}
 
           {successMsg && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold rounded-xl flex items-center gap-2">
+            <div className="p-3 bg-[#E8F8EE] border border-[#CDE9D6] text-[#00966B] text-xs font-bold rounded-2xl flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4" />
               <span>{successMsg}</span>
             </div>
           )}
 
-          <div className="bg-[#FAFCFA] p-3.5 rounded-2xl border border-[#E2F0E7]">
-            <p className="text-xs font-bold text-[#0F172A] mb-2">
+          <div className="bg-[#FBFDFB] p-4 rounded-2xl border border-[#DCEBE1]">
+            <p className="text-xs font-black text-[#14231C] mb-2.5">
               Selected Products for Replenishment ({selectedItems.length} items):
             </p>
 
-            <div className="divide-y divide-[#F1F5F9]">
+            <div className="divide-y divide-[#DCEBE1]/60">
               {selectedItems.map((item, idx) => (
-                <div key={idx} className="py-2 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-white border border-[#E2F0E7] overflow-hidden flex items-center justify-center">
+                <div key={idx} className="py-2.5 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-white border border-[#DCEBE1] overflow-hidden flex items-center justify-center flex-shrink-0">
                       {item.imageUrl ? (
                         <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
                       ) : (
@@ -101,13 +101,13 @@ const BatchOrderModal = ({ isOpen, onClose, onSuccess, selectedItems = [] }) => 
                       )}
                     </div>
                     <div>
-                      <p className="font-bold text-[#0F172A]">{item.name}</p>
-                      <p className="text-[11px] text-[#64748B]">
-                        {item.supplier || item.supplierName || 'Primary Distributor'} • Qty: {item.suggestedQty || item.quantity} units
+                      <p className="font-bold text-[#14231C]">{item.name}</p>
+                      <p className="text-[11px] text-[#66756C]">
+                        {item.supplier || item.supplierName || 'Primary Distributor'} • Qty: <strong className="text-[#00966B]">{item.suggestedQty || item.quantity} units</strong>
                       </p>
                     </div>
                   </div>
-                  <div className="font-bold text-[#0F172A]">
+                  <div className="font-black text-[#14231C]">
                     {formatCurrency(item.estimatedCost || (item.suggestedQty || 1) * (item.unitCost || item.purchasePrice || 0))}
                   </div>
                 </div>
@@ -115,16 +115,16 @@ const BatchOrderModal = ({ isOpen, onClose, onSuccess, selectedItems = [] }) => 
             </div>
           </div>
 
-          <div className="p-3.5 bg-amber-50 rounded-2xl border border-amber-200 text-xs text-amber-800">
-            <strong>Note:</strong> Placing a purchase order generates official PO numbers and sets status to <span className="font-semibold">PENDING</span>. Stock quantities will update only when physical goods are received on the Stock In page.
+          <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 text-xs text-amber-800">
+            <strong>Procurement Workflow:</strong> Placing this batch purchase order generates official PO numbers and records them under pending supplier orders. Stock levels will be updated automatically when physical items are received on the <strong>Stock In</strong> page.
           </div>
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#E2F0E7] flex items-center justify-between bg-slate-50/50">
+        <div className="px-6 py-4 border-t border-[#DCEBE1] flex items-center justify-between bg-[#FBFDFB]">
           <div>
-            <p className="text-xs text-[#64748B] font-medium">Total Order Amount</p>
-            <h4 className="text-lg font-extrabold text-[#0F172A]">
+            <p className="text-[11px] text-[#66756C] font-semibold">Total Purchase Value</p>
+            <h4 className="text-xl font-black text-[#00966B]">
               {formatCurrency(totalCost)}
             </h4>
           </div>
@@ -132,14 +132,14 @@ const BatchOrderModal = ({ isOpen, onClose, onSuccess, selectedItems = [] }) => 
           <div className="flex items-center gap-2.5">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#334155] text-xs font-bold rounded-xl"
+              className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#14231C] text-xs font-bold rounded-2xl transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleConfirmOrder}
               disabled={loading || selectedItems.length === 0}
-              className="px-5 py-2 bg-[#059669] hover:bg-[#047857] text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+              className="px-5 py-2.5 bg-[#00966B] hover:bg-[#007A56] text-white text-xs font-bold rounded-2xl shadow-emerald transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
             >
               <ShoppingBag className="w-4 h-4" />
               <span>{loading ? 'Creating POs...' : 'Confirm & Place Orders'}</span>

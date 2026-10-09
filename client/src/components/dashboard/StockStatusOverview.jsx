@@ -55,8 +55,8 @@ const StockStatusOverview = ({ stockStatus }) => {
       change: '+4%',
       isPositive: true,
       icon: Grid,
-      iconColor: 'text-blue-500',
-      iconBg: 'bg-blue-50',
+      iconColor: 'text-[#00966B]',
+      iconBg: 'bg-emerald-50',
     },
   ];
 

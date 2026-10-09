@@ -445,9 +445,9 @@ const ForgotPasswordPage = () => {
                   </div>
 
                   {/* Floating Widget 3: Today's Sales */}
-                  <div className="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl shadow-lg border border-blue-100 flex items-center justify-between">
+                  <div className="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl shadow-lg border border-emerald-100 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-md bg-emerald-50 text-[#00966B] flex items-center justify-center">
                         <Box className="w-3.5 h-3.5" />
                       </div>
                       <div>
@@ -555,7 +555,7 @@ const ForgotPasswordPage = () => {
                         Email Address
                       </label>
                       <div className="relative">
-                        <Mail className="w-4 h-4 text-blue-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <Mail className="w-4 h-4 text-[#00966B] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                         <input
                           type="email"
                           id="recovery-email"

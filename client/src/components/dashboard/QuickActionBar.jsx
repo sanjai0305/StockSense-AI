@@ -10,7 +10,7 @@ const QuickActionBar = ({ onAddProduct, onStockIn, onStockOut, onGenerateReorder
       {/* 1. Add Product */}
       <button
         onClick={onAddProduct || (() => navigate('/products?action=new'))}
-        className="flex items-center gap-2 px-4 py-2.5 bg-[#2563EB] hover:bg-blue-700 text-white text-[13px] font-bold rounded-xl shadow-sm hover:shadow transition-all flex-1 sm:flex-none justify-center"
+        className="flex items-center gap-2 px-4 py-2.5 bg-[#00966B] hover:bg-[#007A56] text-white text-[13px] font-bold rounded-xl shadow-sm hover:shadow transition-all flex-1 sm:flex-none justify-center cursor-pointer"
       >
         <Plus className="w-4 h-4 stroke-[2.5]" />
         <span>Add Product</span>

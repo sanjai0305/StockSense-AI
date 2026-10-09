@@ -85,7 +85,7 @@ const TopSellingProductsCard = ({ topProducts = [] }) => {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="appearance-none bg-[#F8FAFC] border border-slate-200 rounded-lg pl-2.5 pr-6 py-1 text-slate-700 text-[11px] font-bold focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+              className="appearance-none bg-[#F8FAFC] border border-slate-200 rounded-lg pl-2.5 pr-6 py-1 text-slate-700 text-[11px] font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
             >
               <option value="This Month">This Month</option>
               <option value="Last 30 Days">Last 30 Days</option>
@@ -96,7 +96,7 @@ const TopSellingProductsCard = ({ topProducts = [] }) => {
 
           <button
             onClick={() => navigate('/bills')}
-            className="text-[11.5px] text-[#0969FF] font-bold hover:underline flex items-center gap-0.5 cursor-pointer ml-1"
+            className="text-[11.5px] text-[#00966B] font-bold hover:underline flex items-center gap-0.5 cursor-pointer ml-1"
           >
             <span>Sales Report</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -142,7 +142,7 @@ const TopSellingProductsCard = ({ topProducts = [] }) => {
             {/* Visual Performance Progress Bar */}
             <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
               <div
-                className="bg-gradient-to-r from-emerald-500 to-[#0969FF] h-full rounded-full transition-all duration-500"
+                className="bg-gradient-to-r from-[#00966B] to-[#10B981] h-full rounded-full transition-all duration-500"
                 style={{ width: `${prod.performancePct || 75}%` }}
               />
             </div>

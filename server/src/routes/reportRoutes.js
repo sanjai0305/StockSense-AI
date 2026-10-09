@@ -4,6 +4,7 @@ import {
   getStockInReport,
   getStockOutReport,
   getStockMovementsReport,
+  exportPdfReport,
 } from '../controllers/reportController.js';
 import { authenticate } from '../middleware/auth.js';
 
@@ -14,5 +15,7 @@ router.get('/inventory', getInventoryReport);
 router.get('/stock-in', getStockInReport);
 router.get('/stock-out', getStockOutReport);
 router.get('/movements', getStockMovementsReport);
+router.get('/export-pdf/:reportType?', exportPdfReport);
+router.post('/export-pdf', exportPdfReport);
 
 export default router;

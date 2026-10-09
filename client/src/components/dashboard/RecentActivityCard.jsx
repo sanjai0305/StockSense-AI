@@ -56,7 +56,7 @@ const RecentActivityCard = ({ activities = [] }) => {
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#0969FF] flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#00966B] flex items-center justify-center flex-shrink-0">
             <Clock className="w-4 h-4 stroke-[2.2]" />
           </div>
           <div>

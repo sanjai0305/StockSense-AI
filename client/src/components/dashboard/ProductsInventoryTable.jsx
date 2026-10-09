@@ -52,7 +52,7 @@ const ProductsInventoryTable = ({
               value={searchTerm}
               onChange={handleSearch}
               placeholder="Search products..."
-              className="w-full bg-[#F8FAFC] border border-slate-200 text-slate-800 text-xs rounded-xl pl-8 pr-3 py-1.5 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full bg-[#F8FAFC] border border-slate-200 text-slate-800 text-xs rounded-xl pl-8 pr-3 py-1.5 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
             />
           </div>
 
@@ -61,7 +61,7 @@ const ProductsInventoryTable = ({
             <select
               value={selectedCategory}
               onChange={handleCategoryChange}
-              className="appearance-none bg-[#F8FAFC] border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl pl-3 pr-7 py-1.5 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+              className="appearance-none bg-[#F8FAFC] border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl pl-3 pr-7 py-1.5 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
             >
               <option value="All Categories">All Categories</option>
               {categories.map((c) => (
@@ -78,7 +78,7 @@ const ProductsInventoryTable = ({
             <select
               value={selectedStatus}
               onChange={handleStatusChange}
-              className="appearance-none bg-[#F8FAFC] border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl pl-3 pr-7 py-1.5 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+              className="appearance-none bg-[#F8FAFC] border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl pl-3 pr-7 py-1.5 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
             >
               <option value="Stock Status">Stock Status</option>
               <option value="Low Stock">Low Stock</option>
@@ -88,10 +88,10 @@ const ProductsInventoryTable = ({
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
-          {/* Add Product Blue Button */}
+          {/* Add Product Emerald Button */}
           <button
             onClick={onAddProduct}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#00966B] hover:bg-[#007A56] text-white text-xs font-bold rounded-xl shadow-sm transition-colors cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
             <span>Add Product</span>
@@ -198,7 +198,7 @@ const ProductsInventoryTable = ({
                       <div className="flex items-center justify-end gap-1 text-slate-400">
                         <button
                           onClick={() => onEditProduct && onEditProduct(p)}
-                          className="p-1 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                          className="p-1 hover:text-[#00966B] hover:bg-emerald-50 rounded transition-colors cursor-pointer"
                           title="Edit Product"
                         >
                           <Edit2 className="w-3.5 h-3.5" />

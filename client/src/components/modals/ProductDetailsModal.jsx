@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Package, Barcode, Calendar, History } from 'lucide-react';
+import { X, Package, Barcode, Calendar, History, Truck } from 'lucide-react';
 import { formatCurrency, formatNumber, formatDate } from '../../utils/formatters';
 
 const ProductDetailsModal = ({ isOpen, onClose, product }) => {
@@ -9,16 +9,25 @@ const ProductDetailsModal = ({ isOpen, onClose, product }) => {
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-[#DCEBE1] animate-in fade-in zoom-in-95">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-          <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-            <Package className="w-5 h-5 text-blue-600" />
-            Product Details
-          </h3>
+        <div className="px-6 py-4 border-b border-[#DCEBE1] flex items-center justify-between bg-[#F4FAF6]">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#E8F8EE] text-[#00966B] flex items-center justify-center font-bold">
+              <Package className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <div>
+              <h3 className="font-black text-[#14231C] text-base">
+                Product Specification & Stock Audit
+              </h3>
+              <p className="text-xs text-[#66756C] font-medium">
+                Live inventory snapshot from database
+              </p>
+            </div>
+          </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100"
+            className="p-1.5 text-[#66756C] hover:text-[#14231C] rounded-xl hover:bg-slate-100 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -28,7 +37,7 @@ const ProductDetailsModal = ({ isOpen, onClose, product }) => {
         <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
           {/* Main Info Header */}
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden flex-shrink-0 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-[#F4FAF6] border border-[#DCEBE1] overflow-hidden flex-shrink-0 flex items-center justify-center shadow-sm">
               {product.imageUrl ? (
                 <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
               ) : (
@@ -36,71 +45,74 @@ const ProductDetailsModal = ({ isOpen, onClose, product }) => {
               )}
             </div>
             <div>
-              <h4 className="text-base font-extrabold text-slate-900 leading-tight">
+              <h4 className="text-base font-black text-[#14231C] leading-tight">
                 {product.name}
               </h4>
-              <p className="text-xs text-slate-500 font-medium mt-0.5">
-                Category: <span className="font-semibold text-slate-700">{product.category}</span>
+              <p className="text-xs text-[#66756C] font-medium mt-0.5">
+                Category: <span className="font-bold text-[#14231C]">{product.category}</span>
               </p>
-              <div className="flex items-center gap-2 mt-1">
+              <div className="flex items-center gap-2 mt-1.5">
                 {isLowStock ? (
-                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#FEF2F2] text-[#EF4444] border border-[#FEE2E2]">
-                    Low Stock
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-600 border border-red-200">
+                    Low Stock Alert
                   </span>
                 ) : (
-                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#ECFDF5] text-[#10B981] border border-[#D1FAE5]">
-                    In Stock
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#E8F8EE] text-[#00966B] border border-[#CDE9D6]">
+                    Healthy Stock
                   </span>
                 )}
-                <span className="text-xs font-mono text-slate-400">SKU: {product.sku}</span>
+                <span className="text-xs font-mono text-[#66756C]">SKU: {product.sku}</span>
               </div>
             </div>
           </div>
 
           {/* Pricing & Stock Grid */}
-          <div className="grid grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <div className="grid grid-cols-2 gap-3.5 bg-[#FBFDFB] p-4 rounded-2xl border border-[#DCEBE1]">
             <div>
-              <p className="text-[11px] font-bold text-slate-400 uppercase">Current Stock</p>
-              <p className={`text-xl font-extrabold ${isLowStock ? 'text-rose-600' : 'text-slate-800'}`}>
+              <p className="text-[10px] font-bold text-[#66756C] uppercase">Current Available Stock</p>
+              <p className={`text-xl font-black ${isLowStock ? 'text-red-600' : 'text-[#14231C]'}`}>
                 {formatNumber(product.currentStock)} {product.unitOfMeasure}
               </p>
             </div>
             <div>
-              <p className="text-[11px] font-bold text-slate-400 uppercase">Min. Threshold</p>
-              <p className="text-xl font-extrabold text-slate-800">
+              <p className="text-[10px] font-bold text-[#66756C] uppercase">Reorder Threshold</p>
+              <p className="text-xl font-black text-[#14231C]">
                 {formatNumber(product.minStock || product.reorderLevel)} {product.unitOfMeasure}
               </p>
             </div>
             <div>
-              <p className="text-[11px] font-bold text-slate-400 uppercase">Purchase Price</p>
-              <p className="text-base font-bold text-slate-700">
+              <p className="text-[10px] font-bold text-[#66756C] uppercase">Purchase Cost</p>
+              <p className="text-base font-bold text-[#66756C]">
                 {formatCurrency(product.purchasePrice)}
               </p>
             </div>
             <div>
-              <p className="text-[11px] font-bold text-slate-400 uppercase">Selling Price (MRP)</p>
-              <p className="text-base font-bold text-slate-700">
+              <p className="text-[10px] font-bold text-[#66756C] uppercase">Selling Price (MRP)</p>
+              <p className="text-base font-black text-[#00966B]">
                 {formatCurrency(product.sellingPrice)}
               </p>
             </div>
           </div>
 
           {/* Supplier Info */}
-          <div className="bg-blue-50/60 p-3.5 rounded-2xl border border-blue-100 text-xs">
-            <p className="font-bold text-slate-700">Preferred Supplier</p>
-            <p className="text-slate-900 font-semibold text-sm mt-0.5">
-              {product.supplier || 'Primary Distributor'}
+          <div className="bg-[#E8F8EE] p-4 rounded-2xl border border-[#CDE9D6] text-xs">
+            <div className="flex items-center gap-2 text-[#00966B] font-bold mb-1">
+              <Truck className="w-4 h-4" />
+              <span>Preferred Distributor / Supplier</span>
+            </div>
+            <p className="text-[#14231C] font-black text-sm">
+              {product.supplier || product.supplierName || 'Direct Distributor'}
             </p>
           </div>
 
           {/* Barcode details */}
           {product.barcode && (
-            <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+            <div className="p-3.5 bg-[#F4FAF6] rounded-2xl border border-[#DCEBE1] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Barcode className="w-5 h-5 text-slate-500" />
-                <span className="text-xs font-bold text-slate-700">Barcode / EAN:</span>
+                <Barcode className="w-5 h-5 text-[#66756C]" />
+                <span className="text-xs font-bold text-[#14231C]">Barcode / EAN-13:</span>
               </div>
-              <span className="font-mono text-xs font-bold text-slate-900 bg-white px-2 py-1 rounded border border-slate-200">
+              <span className="font-mono text-xs font-bold text-[#14231C] bg-white px-2.5 py-1 rounded-xl border border-[#DCEBE1]">
                 {product.barcode}
               </span>
             </div>
@@ -108,10 +120,10 @@ const ProductDetailsModal = ({ isOpen, onClose, product }) => {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-slate-100 flex justify-end bg-slate-50/50">
+        <div className="px-6 py-4 border-t border-[#DCEBE1] flex justify-end bg-[#FBFDFB]">
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold rounded-xl"
+            className="px-5 py-2.5 bg-[#F1FAF4] hover:bg-[#E8F8EE] text-[#00966B] border border-[#CDE9D6] text-xs font-bold rounded-2xl transition-colors"
           >
             Close
           </button>

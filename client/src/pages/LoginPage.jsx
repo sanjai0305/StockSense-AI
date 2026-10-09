@@ -249,13 +249,13 @@ const LoginPage = () => {
                   <ChevronRight className="w-3.5 h-3.5 text-red-300" />
                 </div>
 
-                {/* Floating Widget 3: Total Products Blue Card */}
-                <div className="absolute bottom-4 left-4 bg-[#0A192F]/90 backdrop-blur-md px-3 py-2 rounded-2xl shadow-xl border border-blue-400/40 text-white flex items-center gap-2.5 animate-in fade-in slide-in-from-left-6 duration-700">
-                  <div className="w-6 h-6 rounded-lg bg-blue-500/30 text-blue-400 flex items-center justify-center">
+                {/* Floating Widget 3: Total Products Emerald Card */}
+                <div className="absolute bottom-4 left-4 bg-[#032A1C]/90 backdrop-blur-md px-3 py-2 rounded-2xl shadow-xl border border-emerald-400/40 text-white flex items-center gap-2.5 animate-in fade-in slide-in-from-left-6 duration-700">
+                  <div className="w-6 h-6 rounded-lg bg-emerald-500/30 text-emerald-300 flex items-center justify-center">
                     <Box className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <p className="text-[8.5px] text-blue-300 font-bold uppercase tracking-wider">Total Products</p>
+                    <p className="text-[8.5px] text-emerald-300 font-bold uppercase tracking-wider">Total Products</p>
                     <p className="text-xs font-black text-white">1,248</p>
                   </div>
                 </div>

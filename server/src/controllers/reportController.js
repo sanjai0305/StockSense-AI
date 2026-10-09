@@ -147,3 +147,62 @@ export const getStockMovementsReport = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Generate high-resolution PDF report using Python microservice
+ */
+export const exportPdfReport = async (req, res, next) => {
+  try {
+    const reportType = (req.params.reportType || req.query.reportType || 'inventory').toLowerCase();
+    const storeId = req.storeId;
+    const storeName = req.store?.name || "StockSense Supermarket";
+
+    // Query live authorized store products & suppliers
+    const products = await prisma.product.findMany({
+      where: { storeId, isActive: true },
+      include: { category: true, preferredSupplier: true },
+      orderBy: { currentStock: 'asc' },
+    });
+
+    let salesSummary = null;
+    let transactions = [];
+
+    if (reportType === 'sales' || reportType === 'revenue' || reportType === 'pos') {
+      const issues = await prisma.stockIssue.findMany({
+        where: { storeId, transactionType: 'RETAIL_SALE' },
+        include: { customer: true, items: { include: { product: true } } },
+        orderBy: { transactionDate: 'desc' },
+        take: 100,
+      });
+
+      const totalSales = issues.reduce((sum, i) => sum + i.totalAmount, 0);
+      const totalDiscount = issues.reduce((sum, i) => sum + i.discount, 0);
+
+      salesSummary = {
+        total_sales: totalSales,
+        total_bills: issues.length,
+        average_bill_value: issues.length > 0 ? totalSales / issues.length : 0,
+        total_discount: totalDiscount,
+      };
+      transactions = issues;
+    }
+
+    const { generatePdfFromPython } = await import('../services/pythonAnalyticsService.js');
+    const result = await generatePdfFromPython({
+      reportType,
+      storeName,
+      products,
+      salesSummary,
+      transactions,
+    });
+
+    res.setHeader('Content-Type', result.contentType);
+    res.setHeader('Content-Disposition', `attachment; filename="${result.filename}"`);
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
+    res.send(result.buffer);
+  } catch (error) {
+    console.error('PDF export error:', error);
+    next(error);
+  }
+};
+

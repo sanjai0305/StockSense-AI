@@ -77,7 +77,7 @@ const AuthPromotionalPanel = () => {
 
           {/* Floating Metric 3: Total Products */}
           <div className="absolute bottom-2.5 right-3 bg-white/95 backdrop-blur-md p-2 rounded-xl shadow-md border border-slate-100 flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg bg-blue-50 text-[#0969FF] flex items-center justify-center flex-shrink-0">
+            <div className="w-6 h-6 rounded-lg bg-emerald-50 text-[#00966B] flex items-center justify-center flex-shrink-0">
               <Box className="w-3.5 h-3.5 stroke-[2.2]" />
             </div>
             <div>

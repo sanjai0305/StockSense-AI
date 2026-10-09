@@ -3,6 +3,8 @@ import { BarChart3, Printer, Download, Calendar, DollarSign, Package, TrendingUp
 import api from '../services/api';
 import { formatCurrency, formatNumber, formatDate } from '../utils/formatters';
 
+import { downloadPdfReport } from '../services/reportDownloader';
+
 const ReportsPage = () => {
   const [activeTab, setActiveTab] = useState('INVENTORY'); // 'INVENTORY' | 'STOCK_IN' | 'STOCK_OUT' | 'MOVEMENTS'
   const [inventoryData, setInventoryData] = useState(null);
@@ -10,6 +12,8 @@ const ReportsPage = () => {
   const [stockOutData, setStockOutData] = useState(null);
   const [movementsData, setMovementsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [pdfSuccessMessage, setPdfSuccessMessage] = useState(null);
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -42,13 +46,32 @@ const ReportsPage = () => {
     window.print();
   };
 
+  const handleExportPdf = async () => {
+    if (downloadingPdf) return;
+    try {
+      setDownloadingPdf(true);
+      setPdfSuccessMessage(null);
+      const reportType = activeTab === 'STOCK_OUT' ? 'sales' : activeTab === 'STOCK_IN' ? 'inventory' : 'inventory';
+      const result = await downloadPdfReport(reportType);
+      if (result.success) {
+        setPdfSuccessMessage(`Downloaded: ${result.filename}`);
+        setTimeout(() => setPdfSuccessMessage(null), 5000);
+      }
+    } catch (err) {
+      console.error('PDF export failed:', err);
+      alert(err.message || 'Failed to download PDF report');
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
   return (
     <div className="space-y-5">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm no-print">
         <div>
           <h2 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-            <BarChart3 className="w-6 h-6 text-blue-600" />
+            <BarChart3 className="w-6 h-6 text-[#00966B]" />
             Inventory & Financial Reports
           </h2>
           <p className="text-xs text-slate-500 font-medium mt-0.5">
@@ -58,14 +81,29 @@ const ReportsPage = () => {
 
         <div className="flex items-center gap-2.5">
           <button
+            onClick={handleExportPdf}
+            disabled={downloadingPdf}
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#00966B] hover:bg-[#007A56] disabled:bg-slate-300 text-white text-xs font-bold rounded-xl transition-all cursor-pointer shadow-xs"
+          >
+            <Download className="w-4 h-4" />
+            {downloadingPdf ? 'Exporting PDF...' : 'Export PDF Report'}
+          </button>
+          <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
           >
             <Printer className="w-4 h-4" />
             Print Report
           </button>
         </div>
       </div>
+
+      {pdfSuccessMessage && (
+        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-xl flex items-center justify-between">
+          <span>✓ {pdfSuccessMessage}</span>
+          <button onClick={() => setPdfSuccessMessage(null)} className="text-emerald-500">✕</button>
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="flex items-center gap-2 border-b border-slate-200 no-print overflow-x-auto">
@@ -80,7 +118,7 @@ const ReportsPage = () => {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition-all whitespace-nowrap ${
               activeTab === tab.id
-                ? 'border-blue-600 text-blue-600 bg-blue-50/50 rounded-t-xl'
+                ? 'border-[#00966B] text-[#00966B] bg-emerald-50/50 rounded-t-xl'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -109,7 +147,7 @@ const ReportsPage = () => {
             </div>
             <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-card">
               <p className="text-xs font-bold text-slate-500">Total Cost Valuation</p>
-              <h3 className="text-2xl font-extrabold text-blue-600 mt-1">
+              <h3 className="text-2xl font-extrabold text-[#00966B] mt-1">
                 {formatCurrency(inventoryData?.summary?.totalValuation || 0)}
               </h3>
             </div>
@@ -146,7 +184,7 @@ const ReportsPage = () => {
                       <td className="p-3 text-slate-600">{p.category?.name}</td>
                       <td className="p-3 font-extrabold">{p.currentStock} {p.unitOfMeasure}</td>
                       <td className="p-3">{formatCurrency(p.purchasePrice)}</td>
-                      <td className="p-3 font-bold text-blue-600">{formatCurrency(p.currentStock * p.purchasePrice)}</td>
+                      <td className="p-3 font-bold text-[#00966B]">{formatCurrency(p.currentStock * p.purchasePrice)}</td>
                       <td className="p-3">{formatCurrency(p.sellingPrice)}</td>
                       <td className="p-3 text-right font-bold text-emerald-600">{formatCurrency(p.currentStock * p.sellingPrice)}</td>
                     </tr>
@@ -180,7 +218,7 @@ const ReportsPage = () => {
               <tbody className="divide-y text-xs">
                 {stockInData?.data?.map((r) => (
                   <tr key={r.id} className="hover:bg-slate-50">
-                    <td className="p-3 px-4 font-mono font-bold text-blue-600">{r.receiptNumber}</td>
+                    <td className="p-3 px-4 font-mono font-bold text-[#00966B]">{r.receiptNumber}</td>
                     <td className="p-3 font-mono">{r.invoiceNumber}</td>
                     <td className="p-3 font-semibold">{r.supplier?.name}</td>
                     <td className="p-3">{formatDate(r.receiptDate)}</td>

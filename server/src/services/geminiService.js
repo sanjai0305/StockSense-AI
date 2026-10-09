@@ -131,6 +131,17 @@ const GEMINI_FUNCTION_DECLARATIONS = [
       required: ['query'],
     },
   },
+  {
+    name: 'generatePdfReport',
+    description: 'Generate and download a high-resolution, branded PDF report for inventory status, low-stock alerts, or smart reorders.',
+    parameters: {
+      type: 'OBJECT',
+      properties: {
+        reportType: { type: 'STRING', description: 'Report type: "inventory", "low_stock", or "reorder"' },
+      },
+      required: ['reportType'],
+    },
+  },
 ];
 
 /**
@@ -173,6 +184,13 @@ const executeTool = async (toolName, args, context) => {
     case 'searchBusinessKnowledge':
       return await ragService.searchBusinessKnowledge(args.query);
 
+    case 'generatePdfReport':
+      return {
+        status: 'READY',
+        reportType: args.reportType || 'inventory',
+        downloadUrl: `/api/reports/export-pdf/${args.reportType || 'inventory'}`,
+      };
+
     default:
       throw new Error(`Unrecognized tool: ${toolName}`);
   }
@@ -183,11 +201,46 @@ const executeTool = async (toolName, args, context) => {
  * Used when Gemini API key is not configured or in offline test mode.
  * Executes the EXACT same DB & RAG tools and generates structured, grounded answers.
  */
-const generateLocalGroundedResponse = async (userMessage, context) => {
+const generateLocalGroundedResponse = async (userMessage, context, history = []) => {
   const { storeId, userName = 'Store Owner' } = context;
   const q = userMessage.toLowerCase();
   const toolsUsed = [];
   const sources = [];
+
+  // Check recent message history for context (e.g. previous question or response topic)
+  const lastUserMsg = (history || [])
+    .filter((m) => m.sender === 'user' || m.role === 'user')
+    .slice(-2)[0]?.text?.toLowerCase() || '';
+  const lastAiMsg = (history || [])
+    .filter((m) => m.sender === 'ai' || m.role === 'model')
+    .slice(-1)[0]?.text?.toLowerCase() || '';
+
+  const isFollowUp = q.includes('these') || q.includes('those') || q.includes('them') || q.includes('this') || q.includes('their');
+
+  // 0. PDF Report Generation queries
+  if (q.includes('pdf') || q.includes('download report') || q.includes('export') || q.includes('generate report') || (isFollowUp && (q.includes('download') || q.includes('pdf')))) {
+    const isLowStock = q.includes('low') || q.includes('shortage') || (isFollowUp && (lastUserMsg.includes('low') || lastAiMsg.includes('low stock')));
+    const isReorder = q.includes('reorder') || (isFollowUp && (lastUserMsg.includes('reorder') || lastAiMsg.includes('reorder')));
+    const reportType = isLowStock ? 'low_stock' : isReorder ? 'reorder' : 'inventory';
+    
+    toolsUsed.push('generatePdfReport');
+    sources.push({ type: 'python_pdf', label: `Python ReportLab PDF Engine (${reportType})` });
+
+    const summary = await dbTools.getInventorySummary({ storeId });
+    const reportTitle = reportType === 'low_stock' ? 'Low Stock & Replenishment Alert Report' : reportType === 'reorder' ? 'Smart Reorder & Procurement Package Report' : 'Master Inventory Status & Valuation Report';
+
+    return {
+      reply: `📄 **${reportTitle} is Ready for Download!**\n\nOur Python analytics engine generated a high-resolution PDF report branded with your supermarket data.\n\n📊 **Report Summary Preview:**\n- **Total Active SKUs:** ${summary.totalProducts.toLocaleString('en-IN')}\n- **Healthy In-Stock Items:** ${summary.inStockCount.toLocaleString('en-IN')}\n- **Items Below Reorder Point:** ${summary.lowStockCount.toLocaleString('en-IN')}\n- **Current Inventory Valuation:** ₹${summary.inventoryRetailValuation.toLocaleString('en-IN')}\n\n📥 Click the **"Download PDF"** card below to save the official PDF document to your device.`,
+      toolsUsed,
+      sources,
+      reportData: {
+        reportType,
+        reportTitle,
+        downloadUrl: `/api/reports/export-pdf/${reportType}`,
+        filename: `StockSense_${reportType.toUpperCase()}_Report_${new Date().toISOString().split('T')[0]}.pdf`,
+      },
+    };
+  }
 
   // 1. Low stock / stockout queries
   if (q.includes('low') || q.includes('shortage') || q.includes('run out') || q.includes('out of stock') || q.includes('deficit')) {
@@ -404,7 +457,7 @@ export const processAiChat = async ({ message, history = [], context }) => {
 
   // If Gemini API Key is missing or empty, use our grounded local AI engine
   if (!apiKey || apiKey.trim() === '' || apiKey === 'your_server_side_api_key') {
-    return await generateLocalGroundedResponse(message, context);
+    return await generateLocalGroundedResponse(message, context, history);
   }
 
   try {
@@ -430,6 +483,7 @@ export const processAiChat = async ({ message, history = [], context }) => {
 
     const toolsUsed = [];
     const sources = [];
+    let reportData = null;
 
     // Send user message
     let result = await chat.sendMessage(message);
@@ -452,6 +506,16 @@ export const processAiChat = async ({ message, history = [], context }) => {
             type: name === 'searchBusinessKnowledge' ? 'rag' : 'database',
             label: name,
           });
+
+          if (name === 'generatePdfReport') {
+            const reportType = args.reportType || 'inventory';
+            reportData = {
+              reportType,
+              reportTitle: reportType === 'low_stock' ? 'Low Stock & Replenishment Alert Report' : reportType === 'reorder' ? 'Smart Reorder Package Report' : 'Master Inventory Valuation Report',
+              downloadUrl: `/api/reports/export-pdf/${reportType}`,
+              filename: `StockSense_${reportType.toUpperCase()}_Report_${new Date().toISOString().split('T')[0]}.pdf`,
+            };
+          }
 
           functionResponses.push({
             functionResponse: {
@@ -482,11 +546,12 @@ export const processAiChat = async ({ message, history = [], context }) => {
       reply: replyText,
       toolsUsed,
       sources,
+      reportData,
     };
   } catch (error) {
     console.error('Gemini API call failed, falling back to grounded local engine:', error.message);
     // Graceful fallback to guaranteed grounded database engine
-    return await generateLocalGroundedResponse(message, context);
+    return await generateLocalGroundedResponse(message, context, history);
   }
 };
 

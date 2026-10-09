@@ -120,7 +120,7 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
       setTimeout(() => {
         onSuccess();
         onClose();
-      }, 900);
+      }, 800);
     } catch (err) {
       setError(err.message || 'Failed to record stock in');
     } finally {
@@ -130,25 +130,25 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full overflow-hidden border border-[#DCEBE1] animate-in fade-in zoom-in-95">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-emerald-50/40">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+        <div className="px-6 py-4 border-b border-[#DCEBE1] flex items-center justify-between bg-[#F4FAF6]">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#E8F8EE] text-[#00966B] flex items-center justify-center font-bold">
               <ArrowDownLeft className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-base">
+              <h3 className="font-black text-[#14231C] text-base">
                 Stock In (Receive Purchased Goods)
               </h3>
-              <p className="text-xs text-slate-500 font-medium">
+              <p className="text-xs text-[#66756C] font-medium">
                 Record physical shipment received from distributor & increase inventory
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-[#66756C] hover:text-[#14231C] rounded-xl hover:bg-slate-100 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -157,30 +157,30 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
         {/* Content */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl flex items-center gap-2">
+            <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-2xl flex items-center gap-2">
               <AlertCircle className="w-4 h-4" />
               <span>{error}</span>
             </div>
           )}
 
           {successMsg && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold rounded-xl flex items-center gap-2">
+            <div className="p-3 bg-[#E8F8EE] border border-[#CDE9D6] text-[#00966B] text-xs font-bold rounded-2xl flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4" />
               <span>{successMsg}</span>
             </div>
           )}
 
           {/* Supplier & Invoice */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#FBFDFB] p-4 rounded-2xl border border-[#DCEBE1]">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-[#14231C] mb-1">
                 Distributor / Supplier *
               </label>
               <select
                 required
                 value={supplierId}
                 onChange={(e) => setSupplierId(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                className="w-full bg-white border border-[#DCEBE1] rounded-2xl px-3.5 py-2.5 text-xs font-semibold text-[#14231C] focus:outline-none focus:ring-2 focus:ring-[#00966B] cursor-pointer"
               >
                 <option value="">Select Supplier</option>
                 {suppliers.map((s) => (
@@ -192,7 +192,7 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-[#14231C] mb-1">
                 Supplier Invoice / DC No. *
               </label>
               <input
@@ -200,19 +200,19 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
                 required
                 value={invoiceNumber}
                 onChange={(e) => setInvoiceNumber(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full bg-white border border-[#DCEBE1] rounded-2xl px-3.5 py-2.5 text-xs font-mono font-bold text-[#14231C] focus:outline-none focus:ring-2 focus:ring-[#00966B]"
               />
             </div>
           </div>
 
           {/* Product Items Table */}
-          <div className="border border-slate-200 rounded-2xl overflow-hidden">
-            <div className="bg-slate-100/80 px-4 py-2 flex items-center justify-between border-b border-slate-200">
-              <span className="text-xs font-bold text-slate-700">Delivered Line Items</span>
+          <div className="border border-[#DCEBE1] rounded-2xl overflow-hidden">
+            <div className="bg-[#F4FAF6] px-4 py-2.5 flex items-center justify-between border-b border-[#DCEBE1]">
+              <span className="text-xs font-bold text-[#14231C]">Delivered Line Items</span>
               <button
                 type="button"
                 onClick={addItemRow}
-                className="text-xs font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
+                className="text-xs font-bold text-[#00966B] hover:text-[#007A56] flex items-center gap-1.5 transition-colors"
               >
                 <Plus className="w-3.5 h-3.5 stroke-[3]" /> Add Item
               </button>
@@ -222,16 +222,16 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
               {items.map((item, idx) => (
                 <div
                   key={idx}
-                  className="grid grid-cols-12 gap-2 items-center bg-slate-50 p-2.5 rounded-xl border border-slate-200"
+                  className="grid grid-cols-12 gap-2 items-center bg-[#FBFDFB] p-2.5 rounded-2xl border border-[#DCEBE1]"
                 >
                   <div className="col-span-5">
-                    <label className="block text-[10px] font-bold text-slate-500 mb-0.5">
+                    <label className="block text-[10px] font-bold text-[#66756C] mb-0.5">
                       Product
                     </label>
                     <select
                       value={item.productId}
                       onChange={(e) => updateItem(idx, 'productId', e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-semibold"
+                      className="w-full bg-white border border-[#DCEBE1] rounded-xl px-2 py-1.5 text-xs font-semibold text-[#14231C]"
                     >
                       {products.map((p) => (
                         <option key={p.id} value={p.id}>
@@ -242,7 +242,7 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
                   </div>
 
                   <div className="col-span-3">
-                    <label className="block text-[10px] font-bold text-slate-500 mb-0.5">
+                    <label className="block text-[10px] font-bold text-[#66756C] mb-0.5">
                       Qty Received
                     </label>
                     <input
@@ -250,12 +250,12 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
                       min="1"
                       value={item.quantityReceived}
                       onChange={(e) => updateItem(idx, 'quantityReceived', e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold"
+                      className="w-full bg-white border border-[#DCEBE1] rounded-xl px-2.5 py-1.5 text-xs font-bold text-[#14231C]"
                     />
                   </div>
 
                   <div className="col-span-3">
-                    <label className="block text-[10px] font-bold text-slate-500 mb-0.5">
+                    <label className="block text-[10px] font-bold text-[#66756C] mb-0.5">
                       Unit Cost (₹)
                     </label>
                     <input
@@ -263,7 +263,7 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
                       step="0.01"
                       value={item.unitCost}
                       onChange={(e) => updateItem(idx, 'unitCost', e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold"
+                      className="w-full bg-white border border-[#DCEBE1] rounded-xl px-2.5 py-1.5 text-xs font-bold text-[#00966B]"
                     />
                   </div>
 
@@ -271,7 +271,7 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
                     <button
                       type="button"
                       onClick={() => removeItem(idx)}
-                      className="text-slate-400 hover:text-rose-500 p-1"
+                      className="text-[#66756C] hover:text-red-500 p-1 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -282,10 +282,10 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
           </div>
 
           {/* Footer Total & Submit */}
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+          <div className="pt-3 border-t border-[#DCEBE1] flex items-center justify-between">
             <div>
-              <p className="text-xs text-slate-400 font-medium">Total Consignment Value</p>
-              <h4 className="text-lg font-extrabold text-slate-900">
+              <p className="text-[11px] text-[#66756C] font-semibold">Total Consignment Value</p>
+              <h4 className="text-xl font-black text-[#00966B]">
                 {formatCurrency(totalAmount)}
               </h4>
             </div>
@@ -294,14 +294,14 @@ const StockInModal = ({ isOpen, onClose, onSuccess, initialProduct = null, suppl
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl"
+                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#14231C] text-xs font-bold rounded-2xl transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2 bg-[#10B981] hover:bg-emerald-600 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-1.5"
+                className="px-5 py-2.5 bg-[#00966B] hover:bg-[#007A56] text-white text-xs font-bold rounded-2xl shadow-emerald transition-all flex items-center gap-2"
               >
                 <ArrowDownLeft className="w-4 h-4 stroke-[2.5]" />
                 <span>{loading ? 'Receiving...' : 'Record Goods Received'}</span>

@@ -41,14 +41,14 @@ const stockDonutData = [
 
 const InventoryDashboardPreview = () => {
   return (
-    <div className="w-full bg-[#0B1736]/90 backdrop-blur-md rounded-2xl border border-blue-600/30 p-2.5 sm:p-3.5 shadow-2xl shadow-blue-950/80 overflow-hidden transform hover:scale-[1.005] transition-all duration-300">
+    <div className="w-full bg-[#032A1C]/90 backdrop-blur-md rounded-2xl border border-emerald-500/30 p-2.5 sm:p-3.5 shadow-2xl shadow-emerald-950/80 overflow-hidden transform hover:scale-[1.005] transition-all duration-300">
       <div className="bg-white rounded-xl shadow-md border border-slate-200/80 overflow-hidden flex flex-col md:flex-row text-slate-800">
         {/* Mini Sidebar */}
-        <div className="w-36 bg-[#081226] text-slate-300 p-2.5 flex-col justify-between hidden md:flex flex-shrink-0 border-r border-slate-800">
+        <div className="w-36 bg-[#032A1C] text-slate-300 p-2.5 flex-col justify-between hidden md:flex flex-shrink-0 border-r border-emerald-900/50">
           <div className="space-y-3">
             {/* Sidebar Brand */}
             <div className="flex items-center gap-1.5 px-1 py-0.5">
-              <div className="w-6 h-6 rounded-lg bg-[#0969FF] flex items-center justify-center text-white shadow-xs">
+              <div className="w-6 h-6 rounded-lg bg-[#00966B] flex items-center justify-center text-white shadow-xs">
                 <ShoppingCart className="w-3.5 h-3.5" />
               </div>
               <span className="font-extrabold text-white text-[11px] tracking-tight">
@@ -58,7 +58,7 @@ const InventoryDashboardPreview = () => {
 
             {/* Sidebar Links */}
             <div className="space-y-0.5 text-[10px]">
-              <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-[#0969FF] text-white font-bold shadow-xs">
+              <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-[#00966B] text-white font-bold shadow-xs">
                 <LayoutDashboard className="w-3 h-3" />
                 <span>Dashboard</span>
               </div>
@@ -108,7 +108,7 @@ const InventoryDashboardPreview = () => {
                 <Bell className="w-3 h-3" />
                 <span className="w-1.5 h-1.5 rounded-full bg-red-500 absolute top-0.5 right-0.5" />
               </div>
-              <div className="w-5 h-5 rounded-full bg-slate-900 border border-slate-300 text-white flex items-center justify-center text-[8px] font-bold">
+              <div className="w-5 h-5 rounded-full bg-[#00966B] border border-emerald-300 text-white flex items-center justify-center text-[8px] font-bold">
                 👤
               </div>
             </div>
@@ -118,7 +118,7 @@ const InventoryDashboardPreview = () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 my-2.5">
             {/* Metric 1 */}
             <div className="bg-white p-2 rounded-xl border border-slate-200/80 shadow-xs flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-blue-50 text-[#0969FF] flex items-center justify-center flex-shrink-0">
+              <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#00966B] flex items-center justify-center flex-shrink-0">
                 <Package className="w-3.5 h-3.5" />
               </div>
               <div>
@@ -144,7 +144,7 @@ const InventoryDashboardPreview = () => {
 
             {/* Metric 3 */}
             <div className="bg-white p-2 rounded-xl border border-slate-200/80 shadow-xs flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+              <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#00966B] flex items-center justify-center flex-shrink-0">
                 <TrendingUp className="w-3.5 h-3.5" />
               </div>
               <div>
@@ -177,7 +177,7 @@ const InventoryDashboardPreview = () => {
                 <h4 className="text-[10px] font-bold text-slate-800">
                   Recent Products
                 </h4>
-                <span className="text-[8.5px] font-bold text-[#0969FF] cursor-pointer hover:underline">
+                <span className="text-[8.5px] font-bold text-[#00966B] cursor-pointer hover:underline">
                   View All
                 </span>
               </div>
@@ -280,7 +280,7 @@ const InventoryDashboardPreview = () => {
                 </div>
 
                 {/* Tooltip Overlay Badge */}
-                <div className="absolute right-3 top-7 z-10 bg-[#06132F] text-white text-[8.5px] font-bold px-2 py-1 rounded-md shadow-md flex items-center gap-1">
+                <div className="absolute right-3 top-7 z-10 bg-[#032A1C] text-white text-[8.5px] font-bold px-2 py-1 rounded-md shadow-md flex items-center gap-1">
                   <span>₹28,450</span>
                   <span className="text-emerald-400 font-normal">↗ +12%</span>
                 </div>
@@ -293,8 +293,8 @@ const InventoryDashboardPreview = () => {
                     >
                       <defs>
                         <linearGradient id="salesGradPreview" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#0969FF" stopOpacity={0.4} />
-                          <stop offset="95%" stopColor="#0969FF" stopOpacity={0.0} />
+                          <stop offset="5%" stopColor="#00966B" stopOpacity={0.4} />
+                          <stop offset="95%" stopColor="#00966B" stopOpacity={0.0} />
                         </linearGradient>
                       </defs>
                       <XAxis
@@ -307,7 +307,7 @@ const InventoryDashboardPreview = () => {
                       <Area
                         type="monotone"
                         dataKey="sales"
-                        stroke="#0969FF"
+                        stroke="#00966B"
                         strokeWidth={2}
                         fillOpacity={1}
                         fill="url(#salesGradPreview)"

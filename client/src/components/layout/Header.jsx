@@ -272,8 +272,8 @@ const Header = ({ onToggleSidebar }) => {
                           notif.type === 'LOW_STOCK' || notif.type === 'STOCKOUT'
                             ? 'bg-amber-100 text-amber-700'
                             : notif.type === 'PURCHASE_ORDER'
-                            ? 'bg-blue-100 text-blue-700'
-                            : 'bg-emerald-100 text-[#059669]'
+                            ? 'bg-emerald-100 text-[#00966B]'
+                            : 'bg-emerald-100 text-[#00966B]'
                         }`}
                       >
                         {notif.type === 'LOW_STOCK' || notif.type === 'STOCKOUT'
@@ -288,7 +288,7 @@ const Header = ({ onToggleSidebar }) => {
                             {notif.title}
                           </p>
                           {!notif.isRead && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#059669] flex-shrink-0" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#00966B] flex-shrink-0" />
                           )}
                         </div>
                         <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
@@ -342,9 +342,9 @@ const Header = ({ onToggleSidebar }) => {
                         setNotificationDropdownOpen(false);
                         navigate('/stock-in');
                       }}
-                      className="p-3.5 hover:bg-slate-50 transition-colors flex items-start gap-3 cursor-pointer bg-blue-50/40"
+                      className="p-3.5 hover:bg-slate-50 transition-colors flex items-start gap-3 cursor-pointer bg-emerald-50/40"
                     >
-                      <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-100 text-[#00966B] flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">
                         📋
                       </div>
                       <div className="flex-1 min-w-0">
